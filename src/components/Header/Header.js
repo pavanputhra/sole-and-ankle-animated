@@ -114,15 +114,52 @@ const Filler = styled.div`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = ({ children, ...delegated }) => (
+  <NavLinkBase {...delegated}>
+    <DefaultText>{children}</DefaultText>
+    <OnHoverText ariaHidden={true}>{children}</OnHoverText>
+  </NavLinkBase>
+);
+
+
+const NavLinkBase = styled.a`
+  position: relative;
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
+  overflow: hidden;
 
   &:first-of-type {
     color: var(--color-secondary);
+  }
+`;
+
+const DefaultText = styled.div`
+
+  transition: transform 600ms ease-in-out;
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${NavLinkBase}:hover &, ${NavLinkBase}:focus {
+      transform: translateY(-1.5rem);
+      transition: transform 200ms ease-in-out;
+    }
+  }
+`;
+
+const OnHoverText = styled.div`
+  position: absolute;
+  top: 0;
+  font-weight: 700;
+  transform: translateY(1.5rem);
+  transition: transform 600ms ease-in-out;
+  
+  @media (prefers-reduced-motion: no-preference) {
+    ${NavLinkBase}:hover &, ${NavLinkBase}:focus {
+      transform: translateY(0rem);
+      transition: transform 200ms ease-in-out;
+    }
   }
 `;
 

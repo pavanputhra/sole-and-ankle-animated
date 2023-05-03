@@ -3,11 +3,12 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 
-import { QUERIES, WEIGHTS } from '../../constants';
+import { WEIGHTS } from '../../constants';
 
 import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
+import {keyframes} from "styled-components";
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
@@ -36,6 +37,15 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   );
 };
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Overlay = styled(DialogOverlay)`
   position: fixed;
   top: 0;
@@ -45,6 +55,33 @@ const Overlay = styled(DialogOverlay)`
   background: var(--color-backdrop);
   display: flex;
   justify-content: flex-end;
+  animation: ease-in-out 250ms backwards ${fadeIn};
+  perspective: 1000px;
+`;
+
+
+const slamDoor = keyframes`
+  from {
+    transform: rotateY(-90deg);
+  }
+  35% {
+    transform: rotateY(30deg);
+  }
+  60% {
+    transform: rotateY(-15deg);
+  }
+  75% {
+    transform: rotateY(7.5deg);
+  }
+  85% {
+    transform: rotateY(-3.75deg);
+  }
+  93% {
+    transform: rotateY(1.875deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
 `;
 
 const Content = styled(DialogContent)`
@@ -54,6 +91,11 @@ const Content = styled(DialogContent)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${slamDoor} 2000ms linear both;
+    transform-origin: right center;
+  }
 `;
 
 const CloseButton = styled(UnstyledButton)`
@@ -76,6 +118,8 @@ const NavLink = styled.a`
   font-size: 1.125rem;
   text-transform: uppercase;
 
+  animation: ${fadeIn} linear 250ms  300ms backwards ;
+
   &:first-of-type {
     color: var(--color-secondary);
   }
@@ -96,6 +140,7 @@ const SubLink = styled.a`
   color: var(--color-gray-700);
   font-size: 0.875rem;
   text-decoration: none;
+  animation: ${fadeIn} linear 250ms  300ms backwards;
 `;
 
 export default MobileMenu;

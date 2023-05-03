@@ -35,7 +35,9 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
+          <ImageContainer>
+            <Image alt="" src={imageSrc} />
+          </ImageContainer>
           {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
           {variant === 'new-release' && (
             <NewFlag>Just released!</NewFlag>
@@ -79,9 +81,25 @@ const ImageWrapper = styled.div`
   position: relative;
 `;
 
+
+const ImageContainer = styled.div`
+  overflow: hidden;
+  border-radius: 16px 16px 4px 4px;
+`;
+
 const Image = styled.img`
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
+  transition: transform 0.6s ease-in-out;
+  display: block;
+  overflow: hidden;
+  object-fit: cover;
+  
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: scale(1.1);
+      transition: transform 0.2s ease-in-out;
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -121,6 +139,27 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+  
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+    
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    ${ImageWrapper}:hover & {
+      animation: shake 0.5s;
+    }
+  }
 `;
 
 const SaleFlag = styled(Flag)`
